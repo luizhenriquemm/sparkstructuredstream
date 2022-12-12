@@ -9,7 +9,6 @@ This repository is just a simple example of using it, I already worked with it i
 Let's say that you have a path into AWS S3 that your data arrive for your data ingestion, tThe first step is to define the structured schema of the data, we'll do it using the StrucType class:
 
 ```python
-import pyspark.sql.functions as F
 import pyspark.sql.types as T
 
 schema = T.StructType([
@@ -60,3 +59,32 @@ Notice that an other option has been setted: maxFilesPerTrigger. This option is 
 
 After that, our data stream is running:
 ![image](https://user-images.githubusercontent.com/68759905/207071149-03e3f726-73f3-4860-8b2e-2cbfdd512fe2.png)
+
+Full script:
+
+```python
+import pyspark.sql.types as T
+
+schema = T.StructType([
+  T.StructField("id", T.StringType(), True),
+  T.StructField("name", T.StringType(), True),
+  T.StructField("address", T.StringType(), True),
+  T.StructField("email", T.StringType(), True),
+  T.StructField("birthdate", T.StringType(), True),
+  T.StructField("created", T.StringType(), True),
+])
+
+stream = spark.readStream.format("json").schema(schema).load("s3://my-beauty-bucket/some/prefix/new-data/")
+
+def microbatch(df, epoch):
+  df.write.mode("append").format("parquet").save("s3://datalake-bucket/bronze-layer/my-table/")
+  return
+  
+stream
+    .writeStream \
+    .option("checkpointLocation", "s3://datalake-bucket/configs/bronze-layer/my-table/checkpoint/") \
+    .option("maxFilesPerTrigger", 100) \
+    .foreachBatch(microbatch) \
+    .queryName('My table stream (bronze layer)')
+    .start()
+```
