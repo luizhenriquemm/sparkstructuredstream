@@ -52,7 +52,11 @@ stream
     .option("checkpointLocation", "s3://datalake-bucket/configs/bronze-layer/my-table/checkpoint/") \
     .option("maxFilesPerTrigger", 100) \
     .foreachBatch(microbatch) \
+    .queryName('My table stream (bronze layer)')
     .start()
 ```
 
 Notice that an other option has been setted: maxFilesPerTrigger. This option is important for limit the number of files in each batch, in this case we used 100, but it need to be tuned as the files size will always be diferent from case to case.
+
+After that, our data stream is running:
+![image](https://user-images.githubusercontent.com/68759905/207071149-03e3f726-73f3-4860-8b2e-2cbfdd512fe2.png)
