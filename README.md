@@ -41,7 +41,7 @@ def microbatch(df, epoch):
 For the Spark be able to use its checkpoint resource, we need to define a path for its metadata be stored. In this case, it will be:
 
 ```
-s3://dock-datalake-dev/lh/mydata/checkpoint/
+s3://datalake-bucket/configs/bronze-layer/my-table/checkpoint/
 ```
 
 After that, we can start the stream:
@@ -49,8 +49,10 @@ After that, we can start the stream:
 ```python
 stream
     .writeStream \
-    .option("checkpointLocation", "s3://dock-datalake-dev/lh/mydata/checkpoint/") \
+    .option("checkpointLocation", "s3://datalake-bucket/configs/bronze-layer/my-table/checkpoint/") \
     .option("maxFilesPerTrigger", 100) \
     .foreachBatch(microbatch) \
     .start()
 ```
+
+Notice that an other option has been setted: maxFilesPerTrigger. This option is important for limit the number of files in each batch, in this case we used 100, but it need to be tuned as the files size will always be diferent from case to case.
