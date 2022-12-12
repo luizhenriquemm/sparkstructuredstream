@@ -60,7 +60,7 @@ Notice that an other option has been setted: maxFilesPerTrigger. This option is 
 After that, our data stream is running:
 ![image](https://user-images.githubusercontent.com/68759905/207071149-03e3f726-73f3-4860-8b2e-2cbfdd512fe2.png)
 
-Full script:
+## Example full script:
 
 ```python
 import pyspark.sql.types as T
