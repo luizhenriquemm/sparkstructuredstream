@@ -30,7 +30,7 @@ stream = spark.readStream.format("json").schema(schema).load("s3://my-beauty-buc
 
 Spark will read all files that get into this path, but it will keep a checkpoint for wich file it aready readed and wich not, in other words, in the first run, the spark will read all existing files in the path, and for the other runs, it will only read new files, as it know that.
 
-In this case, we'll define a function for process and save the data, as the Spark start many parallel jobs into the cluster, this function will be executed in a microbatches. Definition:
+In this case, we'll define a function for processing and saving the data, as the Spark start many parallel jobs into the cluster, this function will be executed in microbatches. Definition:
 
 ```python
 def microbatch(df, epoch):
