@@ -64,6 +64,11 @@ After that, our data stream is running:
 
 ```python
 import pyspark.sql.types as T
+from pyspark import SparkContext
+from pyspark.sql import SparkSession
+
+sc = SparkContext()
+spark = SparkSession.builder.appName('SparkStructuredStream').getOrCreate()
 
 schema = T.StructType([
   T.StructField("id", T.StringType(), True),
