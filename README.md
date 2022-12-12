@@ -24,7 +24,7 @@ schema = T.StructType([
 The Spark Structured Stream will always need a pre defined schema. In this next step, we have to create the stream instance:
 
 ```python
-stream = spark.readStream.format("json").schema(schema).load("s3://my-beauty-bucket/some/prefix/new-data/")
+stream = spark.readStream.format("json").schema(schema).load("s3://my-beautiful-bucket/some/prefix/new-data/")
 ```
 
 Spark will read all files that get into this path, but it will keep a checkpoint for wich file it aready readed and wich not, in other words, in the first run, the spark will read all existing files in the path, and for the other runs, it will only read new files, as it know that.
